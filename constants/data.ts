@@ -66,3 +66,17 @@ export const CATEGORYOPTIONS =  [
   { id: "9", name: "Groceries", icon: "cart", color: "#8D6E63" },
     { id: "10", name: "Other", icon: "dots-horizontal", color: "#BDBDBD" }
 ];
+export const TRNXDATA = [
+  { id: '1', title: 'Groceries', description: 'Weekly grocery shopping', amount: 50.00, date: '2023-10-01' },
+  { id: '2', title: 'Utilities', description: 'Electricity bill payment', amount: 75.00, date: '2023-10-02' },
+  { id: '3', title: 'Dining Out', description: 'Dinner at restaurant', amount: 30.00, date: '2023-10-03' },
+  { id: '4', title: 'Transport', description: 'Monthly bus pass', amount: 40.00, date: '2023-10-04' },
+ { id: '5', title: 'Groceries', description: 'Weekly grocery shopping', amount: 50000000.00, date: '2023-10-01' },
+  { id: '6', title: 'Utilities', description: 'Electricity bill payment', amount: 75.00, date: '2023-10-02' },
+  { id: '7', title: 'Dining Out', description: 'Dinner at restaurant', amount: 30.00, date: '2023-10-03' },
+  { id: '8', title: 'Transport', description: 'Monthly bus pass', amount: 40.00, date: '2023-10-04' },
+   { id: '9', title: 'Groceries', description: 'Weekly grocery shopping', amount: 50.00, date: '2023-10-01' },
+  { id: '10', title: 'Utilities', description: 'Electricity bill payment', amount: 75.00, date: '2023-10-02' },
+  { id: '11', title: 'Dining Out', description: 'Dinner at restaurant', amount: 30.00, date: '2023-10-03' },
+  { id: '12', title: 'Transport', description: 'Monthly bus pass', amount: 40.00, date: '2023-10-04' },
+];

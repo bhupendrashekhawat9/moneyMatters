@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import BottomDrawer from '@/components/ui/BottomDrawer';
-import ExpenseForm, { Budget, ExpenseCategory, ExpenseFormData } from '../ExpenseForm';
-import useTheme from '@/hooks/useTheme';
-import { ThemeType } from '@/constants/theme';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-type ExpenseFormDrawerProps = {
+import { ThemeType } from '@/constants/theme';
+import useTheme from '@/hooks/useTheme';
+import type { Budget, ExpenseFormData } from './ExpenseForm';
+import ExpenseForm from './ExpenseForm';
+import { ExpenseCategoryType } from '@/types';
+  type ExpenseFormDrawerProps = {
   visible: boolean;
   onClose: () => void;
   budgets: Budget[];
-  categories?: ExpenseCategory[];
+  categories?: ExpenseCategoryType[];
   onSubmit: (expenseData: ExpenseFormData) => Promise<void> | void;
-  initialData?: Partial<ExpenseFormData>;
+  initialData?: Partial<ExpenseFormData >;
   title?: string;
   subtitle?: string;
 };
@@ -93,7 +95,7 @@ export const AddExpenseButton = ({
 // Complete Expense Form Solution Component
 type ExpenseFormSolutionProps = {
   budgets: Budget[];
-  categories?: ExpenseCategory[];
+  categories?: ExpenseCategoryType[];
   onSubmit: (expenseData: ExpenseFormData) => Promise<void> | void;
   initialData?: Partial<ExpenseFormData>;
   title?: string;

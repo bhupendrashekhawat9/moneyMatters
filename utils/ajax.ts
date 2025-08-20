@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getToken } from "./functions";
 
 export interface DoAjaxResponse<T> {
     data: T;
@@ -6,14 +6,9 @@ export interface DoAjaxResponse<T> {
     message:string
 }
 
-const getToken = async () => {
-    return await AsyncStorage.getItem("ssid")
-}
-const deleteToken = async () => {
-    await AsyncStorage.removeItem("ssid")
-}
+
 export default class DoAjax {
-    private hostUrl = "https://samyak-50pp.onrender.com"
+    private hostUrl = "https://appservice-server.onrender.com"
     // private hostUrl = "http://localhost:9000"
     private token = getToken()
     private appName = "dhanmitra"
@@ -41,14 +36,13 @@ export default class DoAjax {
     async exec (){
 
         console.log(this.hostUrl+`/${this.appName}`+this.urlVersion+this.url)
+        await this.setToken()
         let res =  await fetch( this.hostUrl+`/${this.appName}`+this.urlVersion+this.url, {
             method: this.method,
             headers: this.header,
             body: this.body,
         })
-        console.log(res)
         let response =  await res.json()
-        console.log(response)
         return response
     }
     payload(data: unknown) {

@@ -3,14 +3,14 @@ import useTheme from '@/hooks/useTheme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
-    Modal,
-    Pressable,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Modal,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 export type Transaction = {
@@ -80,7 +80,6 @@ const TransactionFilter = ({
     if (newFilters.searchQuery.trim()) {
       const query = newFilters.searchQuery.toLowerCase().trim();
       filtered = filtered.filter(transaction =>
-        transaction.title.toLowerCase().includes(query) ||
         transaction.description.toLowerCase().includes(query) ||
         transaction.amount.toString().includes(query) ||
         (transaction.category?.toLowerCase().includes(query)) ||

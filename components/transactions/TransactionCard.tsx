@@ -1,5 +1,7 @@
 import { ThemeType } from '@/constants/theme';
 import useTheme from '@/hooks/useTheme';
+import { ExpenseType } from '@/types';
+import { formatCurrency } from '@/utils/functions';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import React from 'react';
@@ -13,7 +15,7 @@ type TransactionCardProps = {
     icon: string;
     id: string;
   };
-  onPress: () => void;
+  onPress: (transaction: ExpenseType) => void;
 };
 const TransactionCard = ({
     transaction,
@@ -21,21 +23,28 @@ const TransactionCard = ({
 }: TransactionCardProps) => {
     const { theme } = useTheme();
     const styles = generateStyles(theme);
-    const { title, description, amount } = transaction;
+    const { category, description, amount } = transaction;
     const handleOnPress = () => {
         onPress(transaction );
     };
+
   return (
     <Pressable onPress={handleOnPress} style={styles.card}>
         <View style={styles.cardIconBox}>
-           <MaterialCommunityIcons name={transaction.icon??"receipt"} size={32} color={theme.colors.primary} />
+           <MaterialCommunityIcons name={transaction.icon} size={32} color={theme.colors.primary} />
         </View>
         <View style={styles.cardTextContainer}>
-      <Text style={styles.titleText}>{title}</Text>
+      <Text style={styles.titleText}>{category}</Text>
       <Text style={styles.descriptionText}>{description}</Text>
       </View>
+      <View style={styles.amountContainer}>
+
         <View style={styles.amountContainer}>
-          <Text style={styles.amountText}>${amount.toFixed(2)}</Text>
+          <Text style={styles.amountText}>{formatCurrency(parseInt(amount))}</Text>
+        </View>
+        <View >
+          <Text>{new Date(transaction.date).toLocaleDateString()}</Text>
+        </View>
         </View>
     
     </Pressable>
@@ -74,9 +83,9 @@ const generateStyles = (theme: ThemeType) => StyleSheet.create({
       
     },
     amountContainer: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-end',
+     
+        alignItems: 'flex-end',
+        justifyContent: 'center',
         
        
     },
@@ -91,4 +100,9 @@ const generateStyles = (theme: ThemeType) => StyleSheet.create({
         color: theme.colors.text,
         fontWeight: '600',
     },
+    dateText: {
+        color: theme.colors.text,
+        fontWeight: '600',
+    },
+ 
 })

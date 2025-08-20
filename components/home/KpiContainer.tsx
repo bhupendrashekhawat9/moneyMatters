@@ -15,10 +15,11 @@ const kpiContainer = ({
     kpiList = [],
     onKpiPress = (kpi: any) => {},
 }: KpiContainerProps) => {
+    console.log(kpiList,"kpiList")
   return (
     <View style={[styles.container]}>
         {kpiList.map((kpi) => (
-            <KpiCard key={kpi.id} data={kpi} onPress={() => onKpiPress(kpi)} />
+            <KpiCard key={kpi.title} data={kpi} onPress={() => onKpiPress(kpi)} />
         ))}
     </View>
   )
@@ -31,5 +32,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     flexDirection: 'row',
     gap: 5,
+
     },
 })

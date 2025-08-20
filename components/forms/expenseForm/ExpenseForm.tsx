@@ -1,5 +1,6 @@
 import AppButton from '@/components/AppButton';
 import { ThemeType } from '@/constants/theme';
+import { useAuth } from '@/hooks/useAuth';
 import useTheme from '@/hooks/useTheme';
 import React, { useState } from 'react';
 import {
@@ -11,7 +12,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import SelectInput from '../ui/SelectInput';
+import SelectInput from '../../ui/SelectInput';
+import { ExpenseCategoryType } from '@/types';
 
 export type Budget = {
   id: string;
@@ -21,32 +23,28 @@ export type Budget = {
   color?: string;
 };
 
-export type ExpenseCategory = {
-  id: string;
-  name: string;
-  icon: string;
-  color?: string;
-};
+
 
 export type ExpenseFormData = {
   budgetId: string;
   amount: string;
-  categoryId: string;
+  category: string;
   title: string;
   description: string;
+  userId: string;
   date: string;
 };
 
 type ExpenseFormProps = {
   budgets: Budget[];
-  categories: ExpenseCategory[];
+  categories: ExpenseCategoryType[];
   onSubmit: (expenseData: ExpenseFormData) => void;
   onCancel?: () => void;
   initialData?: Partial<ExpenseFormData>;
   loading?: boolean;
 };
 
-const DEFAULT_CATEGORIES: ExpenseCategory[] = [
+const DEFAULT_CATEGORIES: ExpenseCategoryType[] = [
   { id: '1', name: 'Food & Dining', icon: 'food-fork-drink' },
   { id: '2', name: 'Transportation', icon: 'car' },
   { id: '3', name: 'Shopping', icon: 'shopping' },
@@ -61,7 +59,7 @@ const DEFAULT_CATEGORIES: ExpenseCategory[] = [
 
 const ExpenseForm = ({
   budgets,
-  categories = DEFAULT_CATEGORIES,
+  categories =[],
   onSubmit,
   onCancel,
   initialData = {},
@@ -69,11 +67,12 @@ const ExpenseForm = ({
 }: ExpenseFormProps) => {
   const { theme } = useTheme();
   const styles = generateStyles(theme);
-
+  const {user} = useAuth()
   const [formData, setFormData] = useState<ExpenseFormData>({
     budgetId: initialData.budgetId || '',
+    userId: user?.userId || '',
     amount: initialData.amount || '',
-    categoryId: initialData.categoryId || '',
+    category: initialData.category || '',
     title: initialData.title || '',
     description: initialData.description || '',
     date: initialData.date || new Date().toISOString().split('T')[0],
@@ -92,8 +91,8 @@ const ExpenseForm = ({
       newErrors.amount = 'Please enter a valid amount';
     }
 
-    if (!formData.categoryId) {
-      newErrors.categoryId = 'Please select a category';
+    if (!formData.category) {
+      newErrors.category = 'Please select a category';
     }
 
     setErrors(newErrors);
@@ -101,9 +100,7 @@ const ExpenseForm = ({
   };
 
   const handleSubmit = () => {
-    console.log(formData)
     if (validateForm()) {
-      console.log("valid")
       const selectedBudget = budgets.find(b => b.id === formData.budgetId);
       const expenseAmount = parseFloat(formData.amount);
       
@@ -196,17 +193,17 @@ const ExpenseForm = ({
           <SelectInput
             label="Category"
             required
-            value={formData.categoryId}
+            value={formData.category}
             options={categories.map(category => ({
               id: category.id,
-              label: category.name,
+              label: category.label,
               value: category.id,
               icon: category.icon,
               color: category.color,
             }))}
-            onChange={(value) => updateFormData("categoryId", value)}
+            onChange={(value:string) => updateFormData("category", value)}
             placeholder="Select a category"
-            error={errors.categoryId}
+            error={errors.category}
             clearable
             searchable
           />

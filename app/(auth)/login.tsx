@@ -1,10 +1,12 @@
+
 import AppButton from '@/components/AppButton';
-import { AuthContext } from '@/utils/AuthContext';
-import React, { useContext, useState } from 'react';
+import { useAuth } from '@/hooks/useAuth';
+import { router } from 'expo-router';
+import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 
 const Login = () => {
-  const { login, logout, loading } = useContext(AuthContext);
+  const { login,  loading } = useAuth();
 
   const [form, setForm] = useState<{ email: string; password: string }>({
     email: '',
@@ -24,10 +26,12 @@ const Login = () => {
   };
 
   const handleLogin = () => {
-    console.log('Login button pressed with:', form);
     login(form.email, form.password); // Assuming your useAuth supports this
   };
-  
+
+  const handleSignup = () => {
+    router.push('/signup');
+  };
 
   return (
     <View style={styles.container}>
@@ -51,7 +55,7 @@ const Login = () => {
       />
 
       <AppButton title="Login" onPress={handleLogin} />
-      <AppButton title="Sign Up" onPress={() => {}} style={styles.button} />
+      <AppButton title="Sign Up" onPress={handleSignup} style={styles.button} />
     </View>
   );
 };

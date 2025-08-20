@@ -1,9 +1,12 @@
+import { authControllers } from "@/api/controller";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 
 type User = {
   username: string;
+  userId: string;
+  email:string;
 };
 
 export function useAuth() {
@@ -11,9 +14,11 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   const loadUser = async () => {
+    setLoading(true)
     try {
       const userData = await AsyncStorage.getItem("user");
       if (userData) {
+        setLoading(false)
         setUser(JSON.parse(userData));
       }
     } finally {
@@ -24,17 +29,45 @@ export function useAuth() {
     loadUser();
   }, []);
 
-  const login = useCallback(async (username: string) => {
-    const userObj = { username };
-    await AsyncStorage.setItem("user", JSON.stringify(userObj));
-    setUser(userObj);
-    router.replace("/");
+  const login = useCallback(async (username: string, password: string) => {
+    setLoading(true)
+    const response = await authControllers.login({userEmail: username, userPassword: password})
+    
+    if(response.status == "SUCCESS"){
+      const userObj = response.data;
+      setLoading(false)
+        await AsyncStorage.setItem("user", JSON.stringify(userObj));
+        await AsyncStorage.setItem("ssid", response.data.token);
+      
+        setUser(userObj);
+        router.replace("/");
+    }else{
+      setLoading(false)
+    }
+    
   }, []);
 
   const logout = useCallback(async () => {
     await AsyncStorage.removeItem("user");
     setUser(null);
   }, []);
-  console.log(user)
-  return { user, loading, login, logout };
+
+  const register = useCallback(async (email: string,username: string, password: string) => {
+    setLoading(true)
+    const userObj = { username };
+    const response = await authControllers.register({userEmail:email, userPassword: password,userName: username})
+
+    if(response.status == "SUCCESS"){
+      setLoading(false)
+        await AsyncStorage.setItem("user", JSON.stringify(userObj));
+        await AsyncStorage.setItem("ssid", response.data.token);
+
+        setUser(userObj);
+        router.replace("/");
+    }else{
+      setLoading(false)
+    }
+    
+  }, []);
+  return { user, loading, login, logout, register };
 }

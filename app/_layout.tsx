@@ -1,11 +1,12 @@
 import AuthProvider from '@/utils/AuthContext';
-import { Stack } from 'expo-router';
+import { Slot } from 'expo-router';
 import React from 'react';
 import "./globals.css";
 const Layout = () => {
+    
   return (
     <AuthProvider>
-    <Stack screenOptions={{ headerShown: false }} />
+  <Slot />
     </AuthProvider>
   )
 }
