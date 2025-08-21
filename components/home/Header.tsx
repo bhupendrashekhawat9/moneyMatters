@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 const Header = ({onChange}: {onChange: (date: Date) => void}) => {
     const onFilterChange = (date: Date) => {
-        console.log(date)
+      
         onChange(date)
     }
   return (

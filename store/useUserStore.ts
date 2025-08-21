@@ -1,4 +1,4 @@
-import { createStore } from "zustand"
+import { create } from "zustand"
 
 
 interface settingsType{
@@ -7,11 +7,12 @@ interface settingsType{
     theme:string,
     currencySymbol:string,
 }
-const useUserStore = createStore((set)=>{
+const useUserStore = create((set)=>{
     return {
         user:{
             userName:"",
             email:"",
+            userId:"",
         },
         settings:{
             currency:"",
@@ -19,7 +20,7 @@ const useUserStore = createStore((set)=>{
             theme:"",
             currencySymbol:"",
         },
-        setUser: (user:{userName:string,email:string}) => set({ user }),
+        setUser: (user:{userName:string,email:string,userId:string}) => set({ user }),
         setSettings: (settings:settingsType) => set({ settings }),
         updateSettings: (settings:settingsType) => set((state)=>{
              return {settings: {

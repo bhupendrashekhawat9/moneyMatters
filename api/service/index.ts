@@ -16,7 +16,7 @@ export const expenseServices = {
             "category": expenseData.category,
             "notes": expenseData.description,
         }
-        console.log(payload)        
+              
         const response = await expenseControllers.create(payload)
         if(response.status == "SUCCESS"){
             return getApiResponse(response.data, "SUCCESS", "Expense added successfully")
@@ -25,8 +25,9 @@ export const expenseServices = {
      
     },
 
-    getAll: async() => {
-        const response = await expenseControllers.getAll()
+    getAll: async(args:{userId:string,startDate:string,endDate:string}) => {
+       
+        const response = await expenseControllers.getAll(args)
         if(response.status == "SUCCESS"){
             let data = response.data?.map((item:ExpenseResponseType) => {
                 return {

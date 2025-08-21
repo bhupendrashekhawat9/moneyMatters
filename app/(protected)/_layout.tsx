@@ -11,7 +11,6 @@ export default function RootLayout() {
   const {setExpenseCategories}= useMasterProfileStore()
   const fetchExpCategories = ()=>{
       masterProfileServices.getAllCategories(user?.userId??"").then((res)=>{
-        console.log(res,"resExpenseCategory resssssssssssssssssssssssssss")
           if(res.status == "SUCCESS"){
               setExpenseCategories(res.data??[])
           }

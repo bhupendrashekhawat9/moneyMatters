@@ -15,7 +15,7 @@ const kpiContainer = ({
     kpiList = [],
     onKpiPress = (kpi: any) => {},
 }: KpiContainerProps) => {
-    console.log(kpiList,"kpiList")
+
   return (
     <View style={[styles.container]}>
         {kpiList.map((kpi) => (

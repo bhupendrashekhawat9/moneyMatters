@@ -7,7 +7,7 @@ import { StyleSheet, Text, View } from 'react-native';
 const DetailsScreen = () => {
   const params = useLocalSearchParams<{ data: string }>();
   const data = JSON.parse(params.data);
-  console.log(data)
+
   const handleDelete = () => {
     expenseServices.delete(data.id)
     router.back()

@@ -35,7 +35,10 @@ export default class DoAjax {
     }
     async exec (){
 
-        console.log(this.hostUrl+`/${this.appName}`+this.urlVersion+this.url)
+        console.group(this.hostUrl+`/${this.appName}`+this.urlVersion+this.url,"url")
+        console.log(this.header,"header")
+        console.log(this.body,"body")
+        console.groupEnd()
         await this.setToken()
         let res =  await fetch( this.hostUrl+`/${this.appName}`+this.urlVersion+this.url, {
             method: this.method,

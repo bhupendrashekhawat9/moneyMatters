@@ -36,7 +36,6 @@ const HomeScreen = () => {
     setHomeFilter((prev)=>({...prev,fromDate:date.toISOString()}))
   }
   const styles = useMemo(()=>generateStyle(theme),[theme])
-  console.log(expenseCategories,"expenseCategories")
   return (
     <SafeAreaView style={styles.container} > 
     <ScrollView >

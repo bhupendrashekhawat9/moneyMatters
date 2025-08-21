@@ -16,8 +16,8 @@ export const expenseControllers = {
        return getApiResponse(null, "FAILURE", "Expense failed")
     },
 
-    getAll: async() => {
-        const response: ApiResponse<ExpenseResponseType[]> = await DoAjax.post("/expense/getAll").payload({}).exec()
+    getAll: async(args:{userId:string,startDate:string,endDate:string}) => {
+        const response: ApiResponse<ExpenseResponseType[]> = await DoAjax.post("/expense/getAll").payload(args).exec()
         if(response.status == 200){
            return getApiResponse(response.data, "SUCCESS", "Expense fetched successfully")
        }
@@ -92,7 +92,7 @@ export const homeControllers = {
     getSecondaryKpi: async(args:{userId:string,startDate:string,endDate:string}) => {
 
         const response: ApiResponse<KpiResponse[]> = await DoAjax.post("/home/kpi/secondaryKpis").payload(args).exec()
-        console.log(args,"response header")
+       
         if(response.status == 200){
             
             return getApiResponse(response.data, "SUCCESS", "Expense added successfully")
@@ -101,7 +101,7 @@ export const homeControllers = {
     },
     getPrimaryKpi: async(args:{userId:string,startDate:string,endDate:string}) => {
         const response: ApiResponse<KpiResponse[]> = await DoAjax.post("/home/kpi/heroKpis?userId="+args.userId).payload({}).exec()
-      console.log(response,"response header")
+      
         if(response.status == 200){
             
             return getApiResponse(response.data, "SUCCESS", "Expense added successfully")
@@ -110,7 +110,7 @@ export const homeControllers = {
     },
     getCategoryKpi: async(args:{userId:string,startDate:string,endDate:string}) => {
         const response: ApiResponse<KpiResponse[]> = await DoAjax.post("/home/kpi/category/Kpis").payload(args).exec()
-        console.log(response,"response header")
+        
         if(response.status == 200){
             return getApiResponse(response.data, "SUCCESS", "Expense added successfully")
         }
