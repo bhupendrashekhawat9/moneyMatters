@@ -179,5 +179,12 @@ export const masterProfileServices = {
             return getApiResponse(expenseCategories, "SUCCESS", "Categories fetched successfully")
         }
         return getApiResponse(null, "FAILURE", "Categories failed")
+    },
+    saveCategories: async(userId:string,categories:ExpenseCategoryType[]) => {
+        const response = await userProfileControllers.saveCategories(userId,categories)
+        if(response.status == "SUCCESS"){
+            return getApiResponse(response.data, "SUCCESS", "Categories saved successfully")
+        }
+        return getApiResponse(null, "FAILURE", "Categories failed")
     }
 }
