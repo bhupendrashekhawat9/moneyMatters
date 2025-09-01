@@ -1,20 +1,23 @@
 
-import { ExpenseFormData } from "@/components/forms/expenseForm/ExpenseForm"
-import { ExpenseCategoryResponse, ExpenseCategoryType, ExpenseResponseType, KpiResponse } from "@/types"
+
+import { CategoriesType, ExpenseCategoryResponse, ExpenseCategoryType, KpiResponse, TransactionType, TransactionTypeResponse } from "@/types"
 import { getApiResponse } from "@/utils/functions"
 import { authControllers, expenseControllers, homeControllers, userProfileControllers } from "@controller"
 
 
 export const expenseServices = {
-    create: async(expenseData:ExpenseFormData) => {
+    create: async(expenseData:TransactionType) => {
         const payload = {
             "description": expenseData.description,
             "amount": expenseData.amount,
             "createdDate": new Date().toISOString(),
-            "expenseDate": expenseData.date,
+            "transactionDate": expenseData.transactionDate,
             "userId": expenseData.userId,
             "category": expenseData.category,
-            "notes": expenseData.description,
+            "transactionType": "DEBIT",
+            "transactionMode": "CASH",
+            extREfId:expenseData.refToId,
+            extREfType:expenseData.refToType
         }
               
         const response = await expenseControllers.create(payload)
@@ -29,32 +32,34 @@ export const expenseServices = {
        
         const response = await expenseControllers.getAll(args)
         if(response.status == "SUCCESS"){
-            let data = response.data?.map((item:ExpenseResponseType) => {
+            let data = response.data?.map((item:TransactionTypeResponse) => {
                 return {
                     id: item.id,
                     description: item.description,
                     amount: item.amount,
-                    date: item.expenseDate,
+                    transactionDate: item.transactionDate,
                     userId: item.userId,
                     category: item.category,
-                    notes: item.notes,
+
                     createdDate: item.createdDate,
-                    expenseDate: item.expenseDate,
-                    refToId: item.refToId
+                    transactionType: item.transactionType,
+                    transactionMode: item.transactionMode,
+                    extRefId: item.extRefId,
+                    extRefType: item.extRefType
         
                 }
             })
 
-            return getApiResponse(data, "SUCCESS", "Expense added successfully")
+            return getApiResponse(data, "SUCCESS", "Transactions fetched successfully")
         }
-        return getApiResponse(null, "FAILURE", "Expense failed")
+        return getApiResponse(null, "FAILURE", "Transactions failed")
     },
 
     getById: (id:string) => {
         return expenseControllers.getById(id)
     },
 
-    update: (id:string, updatedData:ExpenseFormData) => {
+    update: (id:string, updatedData:TransactionType) => {
         return expenseControllers.update(id, updatedData)
     },
 
@@ -146,6 +151,21 @@ export const userProfileServices = {
             return getApiResponse(response.data, "SUCCESS", "Profile fetched successfully")
         }
         return getApiResponse(null, "FAILURE", "Profile failed")
+    },
+    saveCategories: async(userId:string,arg:CategoriesType[]) => {
+        const payload:CategoriesType[]= arg.map((item:CategoriesType) => {
+            return {
+                label:item.label,
+                icon:item.icon,
+                color:item.color,
+                usageCount:0,
+            }
+        })
+        const response = await userProfileControllers.saveCategories(payload)
+        if(response.status == "SUCCESS"){
+            return getApiResponse(response.data, "SUCCESS", "Categories saved successfully")
+        }
+        return getApiResponse(null, "FAILURE", "Categories failed")
     },
     updateUserProfile: async(userId:string,arg:{[key:string]:string}) => {
         const response = await userProfileControllers.updateUserProfile(userId,arg)

@@ -19,13 +19,19 @@ export interface ExpenseType {
     date: string;
     refId:string|null
 }
-export interface TransactionResponse {
-    id: string;
-    name: string;
-    amount: number;
+export interface TransactionType {
+    amount: string;
     category: string;
-    date: string;
-    refId:string|null
+    createdDate: string;
+    description: string;
+    transactionDate: string;
+    id: string;
+    transactionType:string;
+    transactionMode:string;
+    refToId: string;
+    userId: string;
+    extRefId:string|null;
+    extRefType:string|null;
 }
 export interface UserResponse {
    userEmail: string;
@@ -33,18 +39,10 @@ export interface UserResponse {
    token: string;
    userName: string;
 }
-export interface ExpenseResponseType {
+export interface TransactionTypeResponse extends TransactionType {
     __v: number;
     _id: string;
-    amount: string;
-    category: string;
-    createdDate: string;
-    description: string;
-    expenseDate: string;
-    id: string;
-    notes: string;
-    refToId: string;
-    userId: string;
+  
 }
 export interface KpiResponse {
    title:string;
@@ -79,4 +77,12 @@ export interface ExpenseCategoryType {
     icon: string;
     color: string;
     usageCount: string;
+}
+
+export interface CategoriesType {
+    label:string;
+    icon:string;
+    color:string;
+    usageCount?:number
+    id?:string
 }

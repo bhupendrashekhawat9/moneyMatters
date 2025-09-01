@@ -3,7 +3,7 @@ import { ExpenseFormData } from "@/components/forms/expenseForm/ExpenseForm";
 import DoAjax from "@/utils/ajax";
 import { getApiResponse } from "@/utils/functions";
 
-import { ApiResponse, ExpenseCategoryResponse, ExpenseResponse, ExpenseResponseType, KpiResponse, TransactionResponse, UserProfileResponse } from "@types";
+import { ApiResponse, CategoriesType, ExpenseCategoryResponse, ExpenseCategoryType, ExpenseResponse, ExpenseResponseType, KpiResponse, TransactionResponse, UserProfileResponse } from "@types";
 
 
 export const expenseControllers = {
@@ -124,6 +124,13 @@ export const userProfileControllers = {
             return getApiResponse(response.data, "SUCCESS", "Profile fetched successfully")
         }
         return getApiResponse(null, "FAILURE", "Profile failed")
+    },
+    saveCategories: async(categories:CategoriesType[]) => {
+        const response: ApiResponse<UserProfileResponse> = await DoAjax.post("/userProfile/saveCategories").payload(categories).exec()
+        if(response.status == 200){
+            return getApiResponse(response.data, "SUCCESS", "Categories saved successfully")
+        }
+        return getApiResponse(null, "FAILURE", "Categories failed")
     },
     updateUserProfile: async(userId:string,arg: {[key:string]:string}) => {
         const response: ApiResponse<UserProfileResponse> = await DoAjax.post("/userProfile/updateProfile?userId="+userId).payload(arg).exec()
