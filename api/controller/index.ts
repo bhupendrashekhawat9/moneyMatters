@@ -145,5 +145,12 @@ export const userProfileControllers = {
             return getApiResponse(response.data, "SUCCESS", "Categories fetched successfully")
         }
         return getApiResponse(null, "FAILURE", "Categories failed")
+    },
+    saveCategories: async(userId:string,categories:ExpenseCategoryType[]) => {
+        const response: ApiResponse<ExpenseCategoryResponse[]> = await DoAjax.post("/profile/category/addNew").payload({userId:userId,categories:categories}).exec()
+        if(response.status == 200){
+            return getApiResponse(response.data, "SUCCESS", "Categories saved successfully")
+        }
+        return getApiResponse(null, "FAILURE", "Categories failed")
     }
 }
