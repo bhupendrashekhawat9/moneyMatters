@@ -7,6 +7,7 @@ import { AuthRequest, IUser } from '../types';
 interface JwtPayload {
   id: string;
 }
+console.log('JWT_SECRET:', JWT_SECRET);
 
 export const protect = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
   let token: string | undefined;

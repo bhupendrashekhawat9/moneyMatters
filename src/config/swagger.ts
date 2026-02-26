@@ -1,4 +1,6 @@
 import swaggerJsdoc from 'swagger-jsdoc';
+import { PORT } from './constants';
+
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -13,8 +15,12 @@ const options: swaggerJsdoc.Options = {
     },
     servers: [
       {
-        url: 'http://localhost:5000',
+        url: `http://localhost:${PORT}`,
         description: 'Development server',
+      },
+       {
+        url: 'https://appservice-server.onrender.com',
+        description: 'Production server',
       },
     ],
     components: {
