@@ -4,9 +4,9 @@ import { useAuth } from '@/hooks/useAuth';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
-
+import CONSTANTS from 'expo-constants';
 const Login = () => {
-  const { login,  loading } = useAuth();
+  const { login, loading, user } = useAuth();
 
   const [form, setForm] = useState<{ email: string; password: string }>({
     email: '',
@@ -32,6 +32,10 @@ const Login = () => {
   const handleSignup = () => {
     router.push('/signup');
   };
+
+  if (user) {
+    router.push('/home');
+  }
 
   return (
     <View style={styles.container}>

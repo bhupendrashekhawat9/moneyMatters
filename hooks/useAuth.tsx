@@ -1,4 +1,7 @@
-import { authControllers } from "@/api/controller";
+
+import { authControllers } from "@/api/controller/auth";
+import { LoginResponse } from "@/api/types";
+import { appStorage } from "@/constants/appStorage";
 import useUserStore from "@/store/useUserStore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
@@ -7,21 +10,19 @@ import { useCallback, useEffect, useState } from "react";
 type User = {
   username: string;
   userId: string;
-  email:string;
+  email: string;
 };
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const {setUser:userStoreSetUser} = useUserStore()
   const loadUser = async () => {
     setLoading(true)
     try {
-      const userData = await AsyncStorage.getItem("user");
-      console.log(JSON.parse(userData),"userData")
+      const userData: User = await AsyncStorage.getItem(appStorage.USER_DATA).then((data) => JSON.parse(data ?? ""));
       if (userData) {
         setLoading(false)
-        setUser(JSON.parse(userData));
+        setUser(userData);
       }
     } finally {
       setLoading(false);
@@ -33,20 +34,16 @@ export function useAuth() {
 
   const login = useCallback(async (username: string, password: string) => {
     setLoading(true)
-    const response = await authControllers.login({userEmail: username, userPassword: password})
-    
-    if(response.status == "SUCCESS"){
-      const userObj = response.data;
-      setLoading(false)
-        await AsyncStorage.setItem("user", JSON.stringify(userObj));
-        await AsyncStorage.setItem("ssid", response.data.token);
-        userStoreSetUser(userObj)
-        setUser(userObj);
-        router.replace("/");
-    }else{
-      setLoading(false)
-    }
-    
+    const response: LoginResponse = await authControllers.login({ email: username, password })
+    setLoading(false)
+    const userObj: User = {
+      username: response.name,
+      email: response.email,
+      userId: response._id
+    };
+    await AsyncStorage.setItem(appStorage.USER_DATA, JSON.stringify(userObj));
+    await AsyncStorage.setItem(appStorage.SSID, response.token);
+    setUser(userObj);
   }, []);
 
   const logout = useCallback(async () => {
@@ -54,23 +51,23 @@ export function useAuth() {
     setUser(null);
   }, []);
 
-  const register = useCallback(async (email: string,username: string, password: string) => {
+  const register = useCallback(async (email: string, username: string, password: string) => {
     setLoading(true)
     const userObj = { username };
-    const response = await authControllers.register({userEmail:email, userPassword: password,userName: username})
+    const response = await authControllers.register({ userEmail: email, userPassword: password, userName: username })
 
-    if(response.status == "SUCCESS"){
+    if (response.status == "SUCCESS") {
       setLoading(false)
-        await AsyncStorage.setItem("user", JSON.stringify(userObj));
-        await AsyncStorage.setItem("ssid", response.data.token);
+      await AsyncStorage.setItem("user", JSON.stringify(userObj));
+      await AsyncStorage.setItem("ssid", response.data.token);
 
-        userStoreSetUser(userObj)
-        setUser(userObj);
-        router.replace("/");
-    }else{
+      userStoreSetUser(userObj)
+      setUser(userObj);
+      // router.replace("/");
+    } else {
       setLoading(false)
     }
-    
+
   }, []);
   return { user, loading, login, logout, register };
 }
