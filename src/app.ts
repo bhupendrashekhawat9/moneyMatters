@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // Swagger documentation
 
-app.use('*',(req,res,next)=>{
+app.use('/',(req,_res,next)=>{
   console.log(`${req.method} ${req.originalUrl}`);
   console.log(req.body);
   next();
