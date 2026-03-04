@@ -27,6 +27,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Swagger documentation
+
+app.use('*',(req,res,next)=>{
+  console.log(`${req.method} ${req.originalUrl}`);
+  console.log(req.body);
+  next();
+})
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
   explorer: true,
   customCss: '.swagger-ui .topbar { display: none }',
