@@ -75,6 +75,7 @@ const options: swaggerJsdoc.Options = {
             _id: { type: 'string', example: '507f1f77bcf86cd799439011' },
             name: { type: 'string', example: 'Food & Dining' },
             icon: { type: 'string', example: 'food-icon' },
+            color: { type: 'string', example: '#FF7043' },
             type: { type: 'string', enum: ['income', 'expense'], example: 'expense' },
             profileId: { type: 'string', nullable: true },
             parentId: { type: 'string', nullable: true },

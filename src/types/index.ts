@@ -1,5 +1,5 @@
-import { Request } from 'express';
-import { Document, Types } from 'mongoose';
+import { Request } from "express";
+import { Document, Types } from "mongoose";
 
 // User interface
 export interface IUser extends Document {
@@ -17,9 +17,9 @@ export interface IProfile extends Document {
   _id: Types.ObjectId;
   userId: Types.ObjectId | IUser;
   name: string;
-  type: 'self' | 'family' | 'wife' | 'business' | 'trip' | 'other';
+  type: "self" | "family" | "wife" | "business" | "trip" | "other";
   currency: string;
-  defaultBudgetCycle: 'monthly' | 'weekly' | 'custom';
+  defaultBudgetCycle: "monthly" | "weekly" | "custom";
   monthStartDay: number;
   createdAt: Date;
   updatedAt: Date;
@@ -30,7 +30,7 @@ export interface IAccount extends Document {
   _id: Types.ObjectId;
   profileId: Types.ObjectId | IProfile;
   name: string;
-  type: 'bank' | 'cash' | 'credit_card';
+  type: "bank" | "cash" | "credit_card";
   openingBalance: number;
   currentBalance: number;
   createdAt: Date;
@@ -42,7 +42,8 @@ export interface ICategory extends Document {
   _id: Types.ObjectId;
   name: string;
   icon: string;
-  type: 'income' | 'expense';
+  color: string;
+  type: "income" | "expense";
   profileId: Types.ObjectId | IProfile | null;
   parentId: Types.ObjectId | ICategory | null;
   isSystem: boolean;
@@ -55,12 +56,12 @@ export interface ITransaction extends Document {
   _id: Types.ObjectId;
   profileId: Types.ObjectId | IProfile;
   accountId: Types.ObjectId | IAccount;
-  type: 'income' | 'expense';
+  type: "income" | "expense";
   amount: number;
   categoryId: Types.ObjectId | ICategory;
   date: Date;
   note?: string;
-  paymentMode: 'cash' | 'card' | 'upi' | 'bank_transfer' | 'other';
+  paymentMode: "cash" | "card" | "upi" | "bank_transfer" | "other";
   isRecurring: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -74,7 +75,7 @@ export interface IBudget extends Document {
   amount: number;
   startDate: Date;
   endDate: Date;
-  type: 'overall' | 'category';
+  type: "overall" | "category";
   categoryIds: Types.ObjectId[] | ICategory[];
   createdAt: Date;
   updatedAt: Date;
@@ -88,7 +89,7 @@ export interface IGoal extends Document {
   targetAmount: number;
   targetDate: Date;
   currentAmount: number;
-  status: 'active' | 'completed' | 'cancelled';
+  status: "active" | "completed" | "cancelled";
   createdAt: Date;
   updatedAt: Date;
 }
@@ -99,7 +100,7 @@ export interface IGoalContribution extends Document {
   goalId: Types.ObjectId | IGoal;
   profileId: Types.ObjectId | IProfile;
   amount: number;
-  source: 'manual' | 'excess_saving' | 'transfer';
+  source: "manual" | "excess_saving" | "transfer";
   date: Date;
   note?: string;
   createdAt: Date;

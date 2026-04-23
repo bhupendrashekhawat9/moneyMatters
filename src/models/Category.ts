@@ -12,6 +12,10 @@ const categorySchema = new Schema<ICategory>(
       type: String,
       default: 'default-icon',
     },
+    color: {
+      type: String,
+      default: '#BDBDBD',
+    },
     type: {
       type: String,
       enum: ['income', 'expense'],

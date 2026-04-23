@@ -78,10 +78,15 @@ export const goalValidator: ValidationChain[] = [
 
 // Category validators
 export const categoryValidator: ValidationChain[] = [
+  body('profileId').isMongoId().withMessage('Valid profile ID is required'),
   body('name').trim().notEmpty().withMessage('Category name is required'),
   body('type')
     .isIn(['income', 'expense'])
     .withMessage('Type must be income or expense'),
+  body('color')
+    .optional()
+    .isHexColor()
+    .withMessage('Color must be a valid hex code'),
 ];
 
 // MongoDB ID param validator

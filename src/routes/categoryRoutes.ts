@@ -1,12 +1,17 @@
-import express from 'express';
+import express from "express";
 import {
   createCategory,
   getCategories,
+  addDefaultCategories,
   updateCategory,
   deleteCategory,
-} from '../controllers/categoryController';
-import { protect } from '../middlewares/authMiddleware';
-import { categoryValidator, mongoIdParam, validate } from '../middlewares/validators';
+} from "../controllers/categoryController";
+import { protect } from "../middlewares/authMiddleware";
+import {
+  categoryValidator,
+  mongoIdParam,
+  validate,
+} from "../middlewares/validators";
 
 const router = express.Router();
 
@@ -40,6 +45,9 @@ router.use(protect);
  *               icon:
  *                 type: string
  *                 example: food-icon
+ *               color:
+ *                 type: string
+ *                 example: '#FF7043'
  *               type:
  *                 type: string
  *                 enum: [income, expense]
@@ -84,9 +92,30 @@ router.use(protect);
  *               items:
  *                 $ref: '#/components/schemas/Category'
  */
-router.route('/')
+router
+  .route("/")
   .post(categoryValidator, validate, createCategory)
   .get(getCategories);
+
+/**
+ * @swagger
+ * /api/categories/defaults:
+ *   post:
+ *     summary: Seed default system categories
+ *     tags: [Categories]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       201:
+ *         description: Default categories seeded successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Category'
+ */
+router.route("/defaults").post(addDefaultCategories);
 
 /**
  * @swagger
@@ -148,8 +177,9 @@ router.route('/')
  *       404:
  *         description: Category not found
  */
-router.route('/:id')
-  .put(mongoIdParam('id'), validate, updateCategory)
-  .delete(mongoIdParam('id'), validate, deleteCategory);
+router
+  .route("/:id")
+  .put(mongoIdParam("id"), validate, updateCategory)
+  .delete(mongoIdParam("id"), validate, deleteCategory);
 
 export default router;
