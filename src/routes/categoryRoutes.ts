@@ -110,7 +110,7 @@ router
  *       content:
  *         application/json:
  *           schema:
- *             type: object
+ *             type: [object]
  *             required:
  *               - name
  *               - type

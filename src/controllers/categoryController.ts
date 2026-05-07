@@ -109,8 +109,6 @@ export const addDefaultCategories = async (
           $set: {
             icon,
             color,
-            isSystem: true,
-            profileId: null,
           },
         },
         upsert: true,
