@@ -88,35 +88,41 @@ export const addDefaultCategories = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const operations = DEFAULT_CATEGORIES.map(
-      ({ name, icon, color, type }) => ({
-        updateOne: {
-          filter: { name, type, isSystem: true },
-          update: {
-            $setOnInsert: {
-              name,
-              type,
-              isSystem: true,
-              profileId: null,
-            },
-            $set: {
-              icon,
-              color,
-              isSystem: true,
-              profileId: null,
-            },
+    const categories = req.body;
+    if (!categories || !Array.isArray(categories) || categories.length === 0) {
+      res.status(400);
+      if (!Array.isArray(categories)) {
+        throw new Error("Request body must be an array of categories");
+      }
+      throw new Error("Request body is required");
+    }
+    const operations = categories.map(({ name, icon, color, type }) => ({
+      updateOne: {
+        filter: { name, type, isSystem: true },
+        update: {
+          $setOnInsert: {
+            name,
+            type,
+            isSystem: true,
+            profileId: null,
           },
-          upsert: true,
+          $set: {
+            icon,
+            color,
+            isSystem: true,
+            profileId: null,
+          },
         },
-      }),
-    );
+        upsert: true,
+      },
+    }));
 
     await Category.bulkWrite(operations, { ordered: false });
 
-    const categories = await Category.find({ isSystem: true }).populate(
+    const fetchedCategories = await Category.find({ isSystem: true }).populate(
       "parentId",
     );
-    res.status(201).json(categories);
+    res.status(201).json(fetchedCategories);
   } catch (error) {
     next(error);
   }

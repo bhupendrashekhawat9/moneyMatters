@@ -105,6 +105,31 @@ router
  *     tags: [Categories]
  *     security:
  *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - type
+ *               - icon
+ *               - color
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Food & Dining
+ *               icon:
+ *                 type: string
+ *                 example: food-icon
+ *               color:
+ *                 type: string
+ *                 example: '#FF7043'
+ *               type:
+ *                 type: string
+ *                 enum: [income, expense]
+ *                 example: expense
  *     responses:
  *       201:
  *         description: Default categories seeded successfully
